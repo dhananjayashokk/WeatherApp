@@ -1,23 +1,41 @@
-import React, {useState, useEffect} from 'react';
-import {View} from 'react-native';
+import React, {useState, useEffect, useCallback} from 'react';
+import {View, PermissionsAndroid} from 'react-native';
 import Weather from '../components/Weather';
 import api from '../ApiConfig';
 import LottieView from 'lottie-react-native';
 import Error from '../components/Error';
+import {useDispatch} from 'react-redux';
+import {toggleDataFetch, toggleError} from '../store/actions';
+import {useSelector} from 'react-redux';
 import GetLocation from 'react-native-get-location';
 
 const MainScreen = () => {
   const [dailyData, setDailyData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isError, setIsError] = useState(false);
+  const isLoading = useSelector((state) => state.isLoading);
+  const isError = useSelector((state) => state.isError);
   const [currentData, setCurrentData] = useState({});
   const [cityName, setCityName] = useState('');
+
+  const dispatch = useDispatch();
+  const dataFetchHandler = useCallback(
+    (status) => {
+      dispatch(toggleDataFetch(status));
+    },
+    [dispatch],
+  );
+
+  const errorHandler = useCallback(
+    (status) => {
+      dispatch(toggleError(status));
+    },
+    [dispatch],
+  );
 
   useEffect(() => {
     fetchLocation();
   }, []);
   const fetchLocation = () => {
-    setIsLoading(true);
+    dataFetchHandler(true);
     GetLocation.getCurrentPosition({
       enableHighAccuracy: true,
       timeout: 15000,
@@ -26,8 +44,8 @@ const MainScreen = () => {
         weatherData(location);
       })
       .catch((error) => {
-        setIsError(true);
-        setIsLoading(false);
+        errorHandler(true);
+        dataFetchHandler(false);
       });
   };
   const weatherData = (location) => {
@@ -50,12 +68,12 @@ const MainScreen = () => {
             };
           }),
         );
-        setIsLoading(false);
-        setIsError(false);
+        dataFetchHandler(false);
+        errorHandler(false);
       })
       .catch(function (error) {
-        setIsError(true);
-        setIsLoading(false);
+        errorHandler(true);
+        dataFetchHandler(false);
       });
 
     api
@@ -66,8 +84,8 @@ const MainScreen = () => {
         setCityName(response.data.city.name.toString());
       })
       .catch(function (error) {
-        setIsError(true);
-        setIsLoading(false);
+        errorHandler(true);
+        dataFetchHandler(false);
       });
   };
   const formatDate = (timestamp) => {
