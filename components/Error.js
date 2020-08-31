@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, Button} from 'react-native';
-const Error = () => {
+const Error = ({onRetryClicked}) => {
   return (
     <View
       style={{
@@ -16,7 +16,7 @@ const Error = () => {
         (Please make sure to switch on your location and data)
       </Text>
       <View style={{marginTop: 50}}>
-        <Button title="retry" style={{fontSize: 10}} />
+        <Button title="retry" onPress={onRetryClicked} style={{fontSize: 10}} />
       </View>
     </View>
   );
