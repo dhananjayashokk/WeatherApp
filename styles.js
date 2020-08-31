@@ -1,0 +1,41 @@
+import {StyleSheet} from 'react-native';
+
+export default StyleSheet.create({
+  image: {
+    flex: 1,
+    height: '100%',
+    width: '100%',
+    opacity: 0.8,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  temperature_card: {
+    flex: 1,
+    borderRadius: 10,
+    elevation: 5,
+    backgroundColor: '#fff',
+    shadowOffset: {width: 1, height: 1},
+    shadowColor: '#333',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    margin: 5,
+  },
+  card: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: '10%',
+    paddingVertical: '3%',
+    borderRadius: 10,
+    elevation: 5,
+    backgroundColor: '#fff',
+    shadowOffset: {width: 1, height: 1},
+    shadowColor: '#333',
+    shadowOpacity: 0.3,
+    shadowRadius: 2,
+    margin: 5,
+    flex: 1,
+    maxHeight: '18%',
+  },
+});
